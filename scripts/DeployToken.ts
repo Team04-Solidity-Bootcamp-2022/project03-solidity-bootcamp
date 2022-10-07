@@ -1,11 +1,17 @@
-// IMPORTS
+import { ethers } from "ethers";
+import { convertStringArrayToBytes32, getDefaultProposals } from "./_helper";
+import * as dotenv from "dotenv";
+dotenv.config();
 
-
-async function main() {
-    //TODO
+export async function deploy() {
+  //TODO
 }
 
-main().catch((error) => {
+export async function getContract() {
+  //TODO
+}
+
+deploy().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
