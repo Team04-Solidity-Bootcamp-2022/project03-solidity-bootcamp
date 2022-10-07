@@ -1,4 +1,4 @@
-import { getContract } from "./Deployment";
+import { getContract } from "./DeployTokenizedBallot";
 
 async function delegate(contract: any) {
   //TODO
