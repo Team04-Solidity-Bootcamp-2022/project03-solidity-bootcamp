@@ -1,4 +1,4 @@
-import { getContract } from "./Deployment";
+import { getContract } from "./DeployTokenizedBallot";
 
 async function castVote(contract: any) {
   //console.log("Casting a vote for proposal 0");
