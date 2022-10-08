@@ -3,6 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 interface IERC20Votes {
     function getPastVotes(address, uint256) external view returns(uint256);
+    function delegate(address delegatee) external;
 }
 
 contract TokenizedBallot {
@@ -34,13 +35,8 @@ contract TokenizedBallot {
         referenceBlock = _referenceBlock;
         tokenContract = IERC20Votes(_tokenContract);
     }
-
-    function delegate(address to) external {
-        //TODO
-    }
     
     function vote(uint proposal, uint256 amount) external {
-        //FIXME: Create function for this feature
         uint256 votingPower = getVotingPower(msg.sender);
 
         require(votingPower >= amount , "Has not enough voting power to vote");
