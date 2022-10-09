@@ -1,11 +1,12 @@
 // IMPORTS
+import { getContract } from "./DeployToken";
+import { BigNumber } from "ethers";
 
+async function checkVotingPower(address: string): Promise<BigNumber> {
+  const contract = await getContract();
+  const votingPower = await contract.getVotes(address);
 
-async function main() {
-    //TODO
+  console.log({votingPower});
+
+  return votingPower;
 }
-
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
