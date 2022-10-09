@@ -2,8 +2,8 @@ import { getContract } from "./DeployTokenizedBallot";
 import { getSignerArray } from "./_accounts";
 import { ethers } from "ethers";
 
-async function castVote(contract: any, from: ethers.Wallet, proposalIndex) {
-  console.log("Casting votes for proposal ${proposalIndex}");
+export async function castVote(contract: any, from: ethers.Wallet, proposalIndex) {
+  console.log(`Casting votes for proposal ${proposalIndex}`);
   const TOKENS_TO_VOTE = ethers.utils.parseEther("2");
   
   const voteTx = await contract.connect(from).vote(proposalIndex, TOKENS_TO_VOTE);
@@ -12,7 +12,7 @@ async function castVote(contract: any, from: ethers.Wallet, proposalIndex) {
   console.log({voteReceipt});
 }
 
-async function main() {
+export async function main() {
   const contract = await getContract();
   const [deployer, acc1, acc2] = await getSignerArray();
   await castVote(contract, acc2, 0);

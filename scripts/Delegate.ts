@@ -1,8 +1,6 @@
-import { getContract } from "./DeployToken";
 import { ethers } from "ethers";
 
-async function delegate(from: ethers.Wallet, to: string) {
-  const contract = await getContract();
+export async function delegate(contract: any, from: ethers.Wallet, to: string) {
   const delegateTx = await contract.connect(from).delegate(to);
   const delegateReceipt = await delegateTx.wait();
 

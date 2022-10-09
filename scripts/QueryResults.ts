@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { getContract } from "./DeployTokenizedBallot";
 import { getDefaultProposals } from "./_helper";
 
-async function getProposals(contract: any) {
+export async function queryResults(contract: any) {
   for (let i = 0; i < getDefaultProposals().length; i++) {
     const proposal = await contract.proposals(i);
     const name = ethers.utils.parseBytes32String(proposal.name);
@@ -10,13 +10,13 @@ async function getProposals(contract: any) {
   }
 }
 
-async function queryResults() {
+export async function main() {
   const contract = await getContract();
-  await getProposals(contract);
+  await queryResults(contract);
 }
 
 if (require.main === module) {
-  queryResults().catch((error) => {
+  main().catch((error) => {
     console.error(error);
     process.exitCode = 1;
   });
