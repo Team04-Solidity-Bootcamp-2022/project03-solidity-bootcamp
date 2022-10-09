@@ -1,33 +1,15 @@
-import { ethers } from "ethers";
 import { convertStringArrayToBytes32, getDefaultProposals } from "./_helper";
+import { getSignerArray } from "./_accounts";
 import { getContract as getMyTokenContract } from "./DeployToken"
 import { TokenizedBallot__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-export async function getSignerArray(): Promise<ethers.Wallet[]> {
-  const provider = ethers.getDefaultProvider("goerli");
-  const deployer = new ethers.Wallet(process.env.PRIVATE_KEY_1 ?? "");
-  const acc1 = new ethers.Wallet(process.env.PRIVATE_KEY_2 ?? "");
-  const acc2 = new ethers.Wallet(process.env.PRIVATE_KEY_3 ?? "");
+const refBlock = 8;
 
-  console.log(`Using addresses:\n${deployer.address}\n${acc1.address}\n${acc2.address}`);
-  
-  const deployerSigner = deployer.connect(provider);
-  const deployerAcc1 = acc1.connect(provider);
-  const deployerAcc2 = acc2.connect(provider);
-
-  return [
-    deployerSigner,
-    deployerAcc1,
-    deployerAcc2
-  ];
-  
-}
-
-export async function deploy() {
+export async function deploy(_refBlock) {
   const [deployer, acc1, acc2] = await getSignerArray();
-  const refBlock = 4;
+  
   //console.log({deployer, acc1, acc2});
   const myTokenContract = await getMyTokenContract();
   
@@ -35,7 +17,7 @@ export async function deploy() {
   const tokenizedBallotContract = await tokenizedBallotContractFactory.deploy(
     convertStringArrayToBytes32(getDefaultProposals()),
     myTokenContract.address,
-    refBlock
+    _refBlock
   );
   
   await tokenizedBallotContract.deployed();
@@ -55,7 +37,7 @@ export async function getContract() {
 }
 
 if (require.main === module) {
-  deploy().catch((error) => {
+  deploy(refBlock).catch(async (error) => {
     console.error(error);
     process.exitCode = 1;
   });  

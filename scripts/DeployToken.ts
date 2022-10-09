@@ -1,28 +1,7 @@
-import { ethers } from "ethers";
-import { convertStringArrayToBytes32, getDefaultProposals } from "./_helper";
+import { getSignerArray } from "./_accounts";
 import { MyToken__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
 dotenv.config();
-
-export async function getSignerArray(): Promise<ethers.Wallet[]> {
-  const provider = ethers.getDefaultProvider("goerli");
-  const deployer = new ethers.Wallet(process.env.PRIVATE_KEY_1 ?? "");
-  const acc1 = new ethers.Wallet(process.env.PRIVATE_KEY_2 ?? "");
-  const acc2 = new ethers.Wallet(process.env.PRIVATE_KEY_3 ?? "");
-
-  console.log(`Using addresses:\n${deployer.address}\n${acc1.address}\n${acc2.address}`);
-  
-  const deployerSigner = deployer.connect(provider);
-  const deployerAcc1 = acc1.connect(provider);
-  const deployerAcc2 = acc2.connect(provider);
-
-  return [
-    deployerSigner,
-    deployerAcc1,
-    deployerAcc2
-  ];
-  
-}
 
 export async function deploy() {
   const [deployer, acc1, acc2] = await getSignerArray();
@@ -47,7 +26,7 @@ export async function getContract() {
 }
 
 if (require.main === module) {
-  deploy().catch((error) => {
+  deploy().catch(async (error) => {
     console.error(error);
     process.exitCode = 1;
   });  
