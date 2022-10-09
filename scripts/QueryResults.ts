@@ -10,18 +10,14 @@ async function getProposals(contract: any) {
   }
 }
 
-async function getChair(contract: any) {
-  const chairperson = await contract.chairperson();
-  console.log({ chairperson });
-}
-
-async function main() {
+async function queryResults() {
   const contract = await getContract();
   await getProposals(contract);
-  await getChair(contract);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  queryResults().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
