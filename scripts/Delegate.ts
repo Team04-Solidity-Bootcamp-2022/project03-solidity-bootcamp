@@ -1,15 +1,10 @@
-import { getContract } from "./DeployTokenizedBallot";
+import { getContract } from "./DeployToken";
+import { ethers } from "ethers";
 
-async function delegate(contract: any) {
-  //TODO
-}
-
-async function main() {
+async function delegate(from: ethers.Wallet, to: string) {
   const contract = await getContract();
-  await delegate(contract);
-}
+  const delegateTx = await contract.connect(from).delegate(to);
+  const delegateReceipt = await delegateTx.wait();
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+  console.log({ delegateReceipt });
+}
