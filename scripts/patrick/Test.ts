@@ -66,7 +66,7 @@ export async function deploy() {
   await delegateTx2.wait();
 
   //SET BLOCK
-  const setBlockTx = await BALLOT_CONTRACT.connect(deployer).setBlock(7);
+  const setBlockTx = await BALLOT_CONTRACT.connect(deployer).setBlock(8);
   await setBlockTx.wait();
 
   //CHECK VOTING POWER
@@ -95,15 +95,27 @@ export async function deploy() {
   //VOTE - ACC 2
   const voteTx1 = await BALLOT_CONTRACT.connect(acc2).vote(
     2,
-    ethers.utils.parseEther("3")
+    ethers.utils.parseEther("2")
   );
   await voteTx1.wait();
 
-  //GET WINNING PROPOSAL
+  //GET WINNING PROPOSAL BEFORE DELEGATE
   const winningProposal = await BALLOT_CONTRACT.winnerName();
   console.log(
     `Winning proposal ${ethers.utils.parseBytes32String(winningProposal)}\n`
   );
+
+  //DELEGATE
+  const delegateTx3 = await BALLOT_CONTRACT.connect(acc2).delegate(acc1.address);
+  await delegateTx3.wait();
+
+  //GET WINNING PROPOSAL AFTER DELEGATE
+  const winningProposal2 = await BALLOT_CONTRACT.winnerName();
+  console.log(
+    `Winning proposal ${ethers.utils.parseBytes32String(winningProposal2)}\n`
+  );
+
+
 }
 
 deploy().catch((error) => {

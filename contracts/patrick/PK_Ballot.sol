@@ -5,6 +5,8 @@ interface IERC20Votes {
     function getPastVotes(address, uint256) external view returns (uint256);
 
     function mint(address to, uint256 amount) external;
+
+    function delegate(address delegatee) external;
 }
 
 contract PK_Ballot {
@@ -48,8 +50,8 @@ contract PK_Ballot {
         tokenContract.mint(msg.sender, paymentReceived);
     }
 
-    function delegate(address to) external {
-        //TODO
+   function delegate(address to) external {
+        tokenContract.delegate(to);
     }
 
     function setBlock (uint blockNumber) public onlyOwner {
