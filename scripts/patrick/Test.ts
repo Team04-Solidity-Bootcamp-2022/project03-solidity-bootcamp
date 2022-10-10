@@ -13,12 +13,16 @@ export async function deploy() {
   await VOTES_CONTRACT.deployed();
   console.log(`Votes deployed to ${VOTES_CONTRACT.address}\n`);
 
+  //CURRENT BLOCK
+  const currentBlock = await ethers.provider.getBlock("latest");
+  console.log(`The current block number is ${currentBlock.number}\n`);
+
   //DEPLOY BALLOT
   const BALLOT_CONTRACT_FACTORY = await ethers.getContractFactory("PK_Ballot");
   const BALLOT_CONTRACT = await BALLOT_CONTRACT_FACTORY.deploy(
     convertStringArrayToBytes32(getDefaultProposals()),
     VOTES_CONTRACT.address,
-    ethers.BigNumber.from(7)
+    ethers.BigNumber.from(currentBlock.number)
   );
   await BALLOT_CONTRACT.deployed();
   console.log(`Ballot deployed to ${BALLOT_CONTRACT.address}\n`);
@@ -53,10 +57,6 @@ export async function deploy() {
   const totalSupply = await VOTES_CONTRACT.totalSupply();
   console.log(`Total supply ${ethers.utils.formatEther(totalSupply)}\n`);
 
-  //CURRENT BLOCK
-  const currentBlock = await ethers.provider.getBlock("latest");
-  console.log(`The current block number is ${currentBlock.number}\n`);
-
   //SELF DELEGATE - ACC 1
   const delegateTx = await VOTES_CONTRACT.connect(acc1).delegate(acc1.address);
   await delegateTx.wait();
@@ -64,6 +64,10 @@ export async function deploy() {
   //SELF DELEGATE - ACC 2
   const delegateTx2 = await VOTES_CONTRACT.connect(acc2).delegate(acc2.address);
   await delegateTx2.wait();
+
+  //SET BLOCK
+  const setBlockTx = await BALLOT_CONTRACT.connect(deployer).setBlock(7);
+  await setBlockTx.wait();
 
   //CHECK VOTING POWER
   const votesAfterDelegate = await VOTES_CONTRACT.getVotes(acc1.address);

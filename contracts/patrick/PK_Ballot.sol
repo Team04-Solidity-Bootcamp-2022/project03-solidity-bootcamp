@@ -10,6 +10,7 @@ interface IERC20Votes {
 contract PK_Ballot {
     uint256 public referenceBlock;
     IERC20Votes public tokenContract;
+    address public owner;
 
     struct Proposal {
         bytes32 name;
@@ -29,6 +30,17 @@ contract PK_Ballot {
         }
         referenceBlock = _referenceBlock;
         tokenContract = IERC20Votes(_tokenContract);
+        owner = msg.sender;
+    }
+
+    // Modifier to check that the caller is the owner of
+    // the contract.
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        // Underscore is a special character only used inside
+        // a function modifier and it tells Solidity to
+        // execute the rest of the code.
+        _;
     }
 
     function buyTokens() public payable {
@@ -38,6 +50,10 @@ contract PK_Ballot {
 
     function delegate(address to) external {
         //TODO
+    }
+
+    function setBlock (uint blockNumber) public onlyOwner {
+        referenceBlock = blockNumber;
     }
 
     function vote(uint256 proposal, uint256 amount) external {
