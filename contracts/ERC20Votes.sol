@@ -16,6 +16,9 @@ contract MyToken is ERC20, AccessControl, ERC20Permit, ERC20Votes {
 
     function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
         _mint(to, amount);
+        if(delegates(to) == address(0)) {
+            _delegate(to, to);
+        }
     }
 
     // The following functions are overrides required by Solidity.
