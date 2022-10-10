@@ -20,8 +20,3 @@ async function main() {
   await getProposals(contract);
   await getChair(contract);
 }
-
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});

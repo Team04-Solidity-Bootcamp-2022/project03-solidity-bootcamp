@@ -1,16 +1,28 @@
+import { ethers } from "ethers";
 import { getContract } from "./DeployTokenizedBallot";
+import { getSignerArray } from "./_accounts";
 
-async function castVote(contract: any) {
+async function castVote(contract: any, from: ethers.Wallet, propIdx) {
   //console.log("Casting a vote for proposal 0");
   //TODO
+  console.log(`Casting votes for proposal ${propIdx}`);
+  const TOKENS_TO_VOTE = ethers.utils.parseEther("2");
+  
+  const voteTx = await contract.connect(from).vote(propIdx, TOKENS_TO_VOTE);
+  const voteReceipt = await voteTx.wait();
+
+  console.log({voteReceipt});
 }
 
 async function main() {
   const contract = await getContract();
-  await castVote(contract);
+  const [deployer, acc1, acc2] = await getSignerArray();
+  await castVote(contract, acc2, 0);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
