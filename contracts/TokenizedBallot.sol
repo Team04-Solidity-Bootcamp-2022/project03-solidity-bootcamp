@@ -61,7 +61,7 @@ contract TokenizedBallot {
     /// @dev Computes the winning proposal taking all
     /// previous votes into account.
     function winningProposal() public view
-            returns (uint winningProposal_)
+        returns (uint winningProposal_)
     {
         uint winningVoteCount = 0;
         for (uint p = 0; p < proposals.length; p++) {
@@ -76,7 +76,7 @@ contract TokenizedBallot {
     // of the winner contained in the proposals array and then
     // returns the name of the winner
     function winnerName() external view
-            returns (bytes32 winnerName_)
+        returns (bytes32 winnerName_)
     {
         winnerName_ = proposals[winningProposal()].name;
     }

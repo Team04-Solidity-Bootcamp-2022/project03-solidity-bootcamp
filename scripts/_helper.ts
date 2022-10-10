@@ -11,3 +11,18 @@ export const convertStringArrayToBytes32 = (array: string[]) => {
   }
   return bytes32Array;
 };
+
+export const getSigners = () => {
+  const options = {
+    deployer: process.env.PRIVATE_KEY_1,
+    acc1: process.env.PRIVATE_KEY_2,
+    acc2: process.env.PRIVATE_KEY_3
+  }
+  const provider = ethers.getDefaultProvider("goerli", options);
+  const signers = [
+    new ethers.Wallet(process.env.PRIVATE_KEY_1 ?? "", provider),
+    new ethers.Wallet(process.env.PRIVATE_KEY_2 ?? "", provider),
+    new ethers.Wallet(process.env.PRIVATE_KEY_3 ?? "", provider)
+  ]
+  return signers;
+}
