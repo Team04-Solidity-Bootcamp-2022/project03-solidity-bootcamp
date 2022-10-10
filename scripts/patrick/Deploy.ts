@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import { deployVotes, deployBallot } from "./_deploy";
 
 async function main() {

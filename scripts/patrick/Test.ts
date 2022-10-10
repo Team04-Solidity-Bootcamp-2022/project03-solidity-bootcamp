@@ -114,8 +114,6 @@ export async function deploy() {
   console.log(
     `Winning proposal ${ethers.utils.parseBytes32String(winningProposal2)}\n`
   );
-
-
 }
 
 deploy().catch((error) => {
